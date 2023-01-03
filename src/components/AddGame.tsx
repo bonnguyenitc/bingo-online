@@ -1,0 +1,203 @@
+import React, { memo, useEffect, useState } from 'react'
+import {
+  Text,
+  VStack,
+  Input,
+  Button,
+  useToast,
+  HStack,
+  Box,
+  Wrap,
+  WrapItem,
+} from '@chakra-ui/react'
+import { useRouter } from 'next/dist/client/router'
+import { useTeamStore, useLoadingStore, useUserStore, useGameStore } from '../store'
+import { useCallback } from 'react'
+import Screen from './Screen'
+import If from './If'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { Team } from '../db/v1'
+import { randomNumber } from '../utils/random'
+import Link from 'next/link'
+import ErrorText from './ErrorText'
+import { usePolicyStore } from '../store/usePolicyStore'
+import { REGEX_LETTER_NUMBER } from '../utils/constans'
+
+type FormData = {
+  name: string
+}
+
+const scheme = yup.object({
+  name: yup
+    .string()
+    .required('Please enter a name')
+    .max(255)
+    .matches(REGEX_LETTER_NUMBER, 'Only allow characters and numbers'),
+})
+
+export default memo(function AddGame() {
+  const [team, setTeam] = useState<string[]>([])
+
+  const { showLoading, hideLoading } = useLoadingStore()
+  const { createGame, countGamesByUserId, amountGameCreated } = useGameStore()
+  const user = useUserStore(state => state.user)
+  const getTeams = useTeamStore(state => state.getTeams)
+  const teams = useTeamStore(state => state.teams)
+  const policy = usePolicyStore(state => state.policy)
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(scheme),
+  })
+
+  useEffect(() => {
+    async function loadTeams() {
+      showLoading()
+      await getTeams(user?.id)
+      hideLoading()
+    }
+    loadTeams()
+  }, [getTeams, hideLoading, showLoading, user?.id])
+
+  const router = useRouter()
+
+  const toast = useToast()
+
+  useEffect(() => {
+    countGamesByUserId(user?.id)
+  }, [countGamesByUserId, user?.id])
+
+  const createNewGame = useCallback(
+    async (data: FormData) => {
+      if (!user || !policy) return
+      const { name } = data
+      if (!policy.can_create_game) {
+        return toast({
+          title: 'Warning',
+          description: 'You can not create game',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+      if (policy.number_game_can_create === amountGameCreated) {
+        return toast({
+          title: 'Warning',
+          description: 'You can not create game',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+      showLoading()
+      const game: any = await createGame(
+        {
+          entry_code: randomNumber(),
+          name,
+          numbers: JSON.stringify([]),
+          user_id: user.id,
+        },
+        team,
+      )
+      hideLoading()
+      if (game?.error) {
+        return toast({
+          title: 'Warning',
+          description: game.error,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+      }
+      if (game) {
+        router.push('/games/' + game.id)
+      }
+    },
+    [user, policy, amountGameCreated, showLoading, createGame, team, hideLoading, toast, router],
+  )
+
+  const handleChoiceGroup = useCallback(
+    (id: string) => {
+      const index = team.findIndex(t => t === id)
+      setTeam(index > -1 ? team.filter(t => t !== id) : [...team, id])
+    },
+    [team],
+  )
+
+  return (
+    <Screen>
+      <VStack flex={1} color="text" fontSize="xl">
+        <Box height="10px" />
+        <Text color="text" fontSize="2xl" fontWeight="bold">
+          Create new game
+        </Text>
+        <Box height="10px" />
+        <Controller
+          control={control}
+          name="name"
+          render={({ field: { onBlur, onChange } }) => (
+            <Input
+              w="300px"
+              onChange={onChange}
+              onBlur={onBlur}
+              placeholder="Type a name of game"
+              size="lg"
+              color="text"
+              borderColor="main.3"
+              focusBorderColor="main.3"
+              maxLength={255}
+            />
+          )}
+        />
+        {errors.name?.message && (
+          <HStack w="300px">
+            <ErrorText message={errors.name.message} />
+          </HStack>
+        )}
+        <Box height="10px" />
+        <Button
+          disabled={Boolean(errors.name?.message)}
+          colorScheme="teal"
+          variant="solid"
+          size="lg"
+          w="300px"
+          onClick={handleSubmit(createNewGame)}>
+          Create
+        </Button>
+        <Box height="10px" />
+        <HStack w="100%">
+          <Text fontWeight="bold">My Teams</Text>
+        </HStack>
+        <Box height="10px" />
+        <If
+          condition={teams.length > 0}
+          component={
+            <Wrap pb="4" w="100%">
+              {teams.map((t: Team) => (
+                <WrapItem key={t.id}>
+                  <Button
+                    colorScheme={team.includes(t.id) ? 'orange' : 'teal'}
+                    onClick={() => handleChoiceGroup(t.id)}>
+                    <Text color="main.4" fontWeight="semibold" fontSize="md">
+                      {t.name}
+                    </Text>
+                  </Button>
+                </WrapItem>
+              ))}
+            </Wrap>
+          }
+          fallback={
+            <Link href="/teams/add">
+              <Text fontWeight="light" color="text" fontSize="xl">{`Let's add your team`}</Text>
+            </Link>
+          }
+        />
+      </VStack>
+    </Screen>
+  )
+})
