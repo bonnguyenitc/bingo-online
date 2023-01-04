@@ -11,6 +11,8 @@
 - Create database follow [ERD image](https://github.com/bonnguyenitc/bingo-online/blob/main/dist/db/bingo-erd.png)
 - Set NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY in .env
 - Enable realtime for games, rounds table
+- Login with Google [DOCS](https://supabase.com/docs/guides/auth/social-login/auth-google)
+- Login with Github [DOCS](https://supabase.com/docs/guides/auth/social-login/auth-github)
 
 #### Tech Stack
 
