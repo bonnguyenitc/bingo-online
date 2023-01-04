@@ -14,8 +14,6 @@ import {
   CloseButton,
   useClipboard,
   Wrap,
-  OrderedList,
-  ListItem,
   HStack,
   useDisclosure,
   Button,
