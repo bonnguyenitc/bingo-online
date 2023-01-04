@@ -3,7 +3,7 @@ import { Input, InputProps } from '@chakra-ui/react'
 import { Control, Controller } from 'react-hook-form'
 
 type Props = {
-  control: Control
+  control: any
   name: string
 }
 
