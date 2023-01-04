@@ -78,7 +78,7 @@ export default memo(function PlayGround() {
           Bingo numbers
         </Text>
         <Box height="10px" />
-        <Wrap px="4">
+        <Wrap px="4" justify="space-between">
           {result?.map(num => (
             <WrapItem key={num}>
               <Center bg="main.1" borderRadius="full" w="50px" h="50px">

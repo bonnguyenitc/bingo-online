@@ -30,7 +30,7 @@ import { NUMBER_MAX } from '../utils/constans'
 import { randomBingo } from '../utils/random'
 import { delay } from '../utils/helpers'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { Round } from '../db/v1'
+import { CodePlay, Round } from '../db/v1'
 import PlayersDrawer from './PlayersDrawer'
 import PrimaryIconButton from './PrimaryIconButton'
 import PrimarySwitch from './PrimarySwitch'
@@ -209,7 +209,7 @@ export default memo(function GameManagement({ id }: Props) {
       const grId = game.id
       const members = await exportMemberCsv(grId)
       if (members) {
-        const dataLean = members.map((item: any) => {
+        const dataLean = members.map((item: CodePlay) => {
           return {
             Name: item.users?.full_name,
             Code: item.code,
@@ -428,7 +428,7 @@ export default memo(function GameManagement({ id }: Props) {
           </Alert>
         )}
         <Box height="8px" />
-        <Wrap w="100%">
+        <Wrap w="100%" justify="space-between">
           {numbers.map(num => (
             <NumberBox number={num} key={num} onDelete={removeNumber} />
           ))}
