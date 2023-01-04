@@ -45,7 +45,7 @@ const findByCode = async (code: string, userId: string): Promise<CodePlay | unde
   return data?.[0]
 }
 
-const findByIdCsv = async (id: string): Promise<any[]> => {
+const findByIdCsv = async (id: string): Promise<CodePlay[]> => {
   const { data } = await supabaseClient
     .from(TABLE_NAME)
     .select(
@@ -55,20 +55,7 @@ const findByIdCsv = async (id: string): Promise<any[]> => {
     `,
     )
     .eq('game_id', id)
-  return data || []
-}
-
-const findByCodeAndGroupJoined = async (code: string): Promise<any> => {
-  const { data } = await supabaseClient
-    .from(TABLE_NAME)
-    .select(
-      `
-      user_id,
-      group_joined_round:group_joined_round_id( round_id )
-    `,
-    )
-    .eq('code', code)
-  return data?.[0]
+  return (data || []) as CodePlay[]
 }
 
 export const CodePlayDB = {
@@ -76,6 +63,5 @@ export const CodePlayDB = {
   findByUserId,
   findByIdCsv,
   findByCodeAndTeamId,
-  findByCodeAndGroupJoined,
   findByCode,
 }

@@ -1,7 +1,3 @@
-export type PageProps = {
-  user: any
-}
-
 export type CreateRoundPayload = {
   name: string
   userId: string

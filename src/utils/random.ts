@@ -8,7 +8,7 @@ export const randomNumber = () => {
   return window.crypto.getRandomValues(new Uint32Array(1))[0] + ''
 }
 
-function getRandomInt(min: number, max: number): any {
+function getRandomInt(min: number, max: number): number {
   // Create byte array and fill with 1 random number
   const byteArray = new Uint8Array(1)
   window.crypto.getRandomValues(byteArray)
@@ -19,8 +19,8 @@ function getRandomInt(min: number, max: number): any {
   return min + (byteArray[0] % range)
 }
 
-export function createNumbers(): any[] {
-  const list: any[] = []
+export function createNumbers(): number[] {
+  const list: number[] = []
   for (let i = 1; i <= 25; i++) {
     let element = getRandomInt(1, NUMBER_MAX)
     while (list.includes(element)) {
@@ -28,7 +28,7 @@ export function createNumbers(): any[] {
     }
     list.push(element)
   }
-  list[12] = null
+  list[12] = 0
 
   return list
 }

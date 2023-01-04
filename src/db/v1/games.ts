@@ -85,7 +85,7 @@ const findByIdNotDone = async (userId: string): Promise<Game | undefined> => {
   return data?.[0]
 }
 
-const getGames = async (userId: string): Promise<any[]> => {
+const getGames = async (userId: string): Promise<Game[]> => {
   const { data } = await supabaseClient
     .from(TABLE_NAME)
     .select()

@@ -64,18 +64,6 @@ const getListRound = async (userId: string): Promise<TeamPlayGame[]> => {
   return data || []
 }
 
-const getInfo = async (id: number): Promise<any> => {
-  const { data } = await supabaseClient
-    .from(TABLE_NAME)
-    .select(
-      `
-      groups:group_id ( name, id )
-    `,
-    )
-    .eq('id', id)
-  return data?.[0]
-}
-
 export const TeamPlayGameDB = {
   insert,
   findById,
@@ -84,6 +72,5 @@ export const TeamPlayGameDB = {
   findByCode,
   getListRound,
   findByUserId,
-  getInfo,
   findByRoundId,
 }

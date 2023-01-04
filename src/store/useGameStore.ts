@@ -13,15 +13,14 @@ type State = {
 
 type Action = {
   setGame: (round: Game) => void
-  joinGameForGuest: (code: string) => Promise<any>
-  sendWinner: (userId: string, roundId: number, isWin: boolean) => Promise<any>
+  sendWinner: (userId: string, roundId: number, isWin: boolean) => Promise<Boolean>
   getWinners: (gameId: string) => Promise<Round[]>
   createGame: (game: CreateGamePayload, teamIds: string[]) => Promise<Game | { error?: string }>
   getGames: (userId: string | undefined) => Promise<void>
   triggerDone: (id: string, userId: string, value: boolean) => Promise<void>
   getGameById: (id: string) => Promise<void>
   triggerRegister: (id: string, userId: string, value: boolean) => Promise<void>
-  addNumberBingo: (id: string, userId: string, value: string) => Promise<any>
+  addNumberBingo: (id: string, userId: string, value: string) => Promise<void>
   findUserJoined: (userId: string, gameId: string) => Promise<CodePlay | undefined>
   addNewPlayer: (userId: string, gameId: string) => Promise<CodePlay | undefined>
   countGamesByUserId: (userId: string | undefined) => Promise<void>
@@ -32,9 +31,6 @@ export const useGameStore = create<State & Action>((set, get) => ({
   games: [],
   amountGameCreated: 0,
   loadingJoinGame: false,
-  joinGameForGuest: async code => {
-    //
-  },
   sendWinner: async (userId, roundId, isWin) => {
     return await GamesDB.updateWin(userId, roundId, isWin)
   },

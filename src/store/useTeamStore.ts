@@ -11,7 +11,7 @@ type State = {
 
 type Action = {
   createTeam: (body: CreateTeamPayload) => Promise<Team | undefined>
-  checkNameTeam: (name: string) => Promise<any>
+  checkNameTeam: (name: string) => Promise<Team | undefined>
   addMemberForTeam: (body: AddMemberPayload) => Promise<Member | undefined>
   findMemberExistInTeam: (userId: string, teamId: string) => Promise<Member | undefined>
   getTeams: (userId: string | undefined) => Promise<void>
