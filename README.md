@@ -27,6 +27,8 @@ yarn build
 
 [DEMO](https://bingo-online-phi.vercel.app/)
 
+#### Welcome you can give me feedback by a new issue to help me improve code or features for game
+
 #### LISENCE
 
-#### MIT
+### MIT
