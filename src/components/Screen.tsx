@@ -8,7 +8,7 @@ type Props = {
 
 export default function Screen({ children }: Props) {
   return (
-    <VStack flex={1} className={styles.mt0} bg="background" justifyContent="center" width="md">
+    <VStack flex={1} className={styles.mt0} bg="background" justifyContent="center" w="100%">
       {children}
     </VStack>
   )

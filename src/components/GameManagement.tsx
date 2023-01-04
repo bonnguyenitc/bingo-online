@@ -427,6 +427,7 @@ export default memo(function GameManagement({ id }: Props) {
             <NumberBox number={num} key={num} onDelete={removeNumber} />
           ))}
         </Wrap>
+        <Box height="8px" />
       </VStack>
       <PlayersDrawer gameId={game.id} isOpen={isOpen} onClose={onClose} />
     </Screen>

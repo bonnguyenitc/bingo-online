@@ -39,7 +39,7 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
         <title>{title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <HStack bg="main.2" px="4" w="md" justifyContent="space-between" alignItems="center">
+      <HStack bg="main.2" px="4" w="100%" justifyContent="space-between" alignItems="center">
         <Link href="/">
           <Text fontSize="3xl" color="white">
             Bingo
@@ -76,7 +76,7 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
         </Flex>
       </HStack>
       {hasBack && (
-        <HStack className={styles.mt0} py="4" px="4" background="background" width="md">
+        <HStack className={styles.mt0} py="4" px="4" background="background" w="100%">
           {!isHome && (
             <PrimaryIconButton onClick={router.back} aria-label="go-back" icon={<FaArrowLeft />} />
           )}
