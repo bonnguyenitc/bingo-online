@@ -60,6 +60,8 @@ export default memo(function GameManagement({ id }: Props) {
   const [winners, setWinners] = useState<Round[]>([])
   const [err, setErr] = useState('')
 
+  const [newNumber, setNewNumber] = useState(0)
+
   const { onCopy, setValue } = useClipboard(game?.entry_code + '')
 
   const getListWinner = useCallback(
@@ -147,6 +149,7 @@ export default memo(function GameManagement({ id }: Props) {
       if (rs?.includes(number)) {
         return setErr('This number already exists')
       }
+
       if (rs?.length > 0) {
         await addNumberBingo(id, userId, JSON.stringify([...rs, number]))
       } else {
@@ -171,11 +174,13 @@ export default memo(function GameManagement({ id }: Props) {
         if (numbers?.includes(bingo)) {
           return setErr('This number already exists')
         }
+        let done = false
         if (numbers?.length > 0) {
-          await addNumberBingo(id, userId, JSON.stringify([...numbers, bingo]))
+          done = await addNumberBingo(id, userId, JSON.stringify([...numbers, bingo]))
         } else {
-          await addNumberBingo(id, userId, JSON.stringify([bingo]))
+          done = await addNumberBingo(id, userId, JSON.stringify([bingo]))
         }
+        if (done) setNewNumber(bingo)
       } finally {
         hideLoading()
       }
@@ -232,7 +237,6 @@ export default memo(function GameManagement({ id }: Props) {
   const handleBingo = useCallback(async () => {
     if (numbers?.length === NUMBER_MAX) return
     showLoading()
-    await delay(3000)
     let bingo = randomBingo(1, NUMBER_MAX)
     while (numbers.includes(bingo)) {
       bingo = randomBingo(1, NUMBER_MAX)
@@ -249,11 +253,10 @@ export default memo(function GameManagement({ id }: Props) {
 
   return (
     <Screen>
-      <VStack px="4" flex={1} alignItems="flex-start" fontWeight="bold" w="100%" color="textLight">
+      <VStack px="4" flex={1} alignItems="flex-start" w="100%" color="textLight">
         <Flex
           w="100%"
           fontSize="2xl"
-          fontWeight="bold"
           justifyContent="center"
           bg="main.2"
           borderRadius="12px"
@@ -355,10 +358,10 @@ export default memo(function GameManagement({ id }: Props) {
               <>
                 {winners?.map((winner, index) => (
                   <HStack key={winner.id}>
-                    <Text color="textLight" fontSize="md" fontWeight="semibold">
+                    <Text fontSize="md" fontWeight="semibold">
                       {index + 1}.
                     </Text>
-                    <Text color="textLight" fontSize="md" fontWeight="semibold">
+                    <Text fontSize="md" fontWeight="semibold">
                       {winner.users?.email}
                     </Text>
                   </HStack>
@@ -373,12 +376,20 @@ export default memo(function GameManagement({ id }: Props) {
           />
         </VStack>
         <Box height="18px" />
-        <Flex>
+        <Flex alignItems="center">
           <Button colorScheme="cyan" onClick={handleBingo}>
             <Text fontSize="2xl" color="textLight">
               Bingo
             </Text>
           </Button>
+          <If
+            condition={Boolean(newNumber)}
+            component={
+              <Text ml="16px" fontSize="2xl" color="text">
+                {newNumber}
+              </Text>
+            }
+          />
         </Flex>
         <Text color="text" fontSize="xs">
           Click to start generate bingo numbers now
@@ -418,13 +429,7 @@ export default memo(function GameManagement({ id }: Props) {
             <Text fontSize="lg" color="text" fontWeight="light">
               {err}
             </Text>
-            <CloseButton
-              onClick={resetError}
-              position="absolute"
-              color="text"
-              right="8px"
-              top="8px"
-            />
+            <CloseButton onClick={resetError} position="absolute" color="text" right="8px" />
           </Alert>
         )}
         <Box height="8px" />

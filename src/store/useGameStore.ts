@@ -20,7 +20,7 @@ type Action = {
   triggerDone: (id: string, userId: string, value: boolean) => Promise<void>
   getGameById: (id: string) => Promise<void>
   triggerRegister: (id: string, userId: string, value: boolean) => Promise<void>
-  addNumberBingo: (id: string, userId: string, value: string) => Promise<void>
+  addNumberBingo: (id: string, userId: string, value: string) => Promise<boolean>
   findUserJoined: (userId: string, gameId: string) => Promise<CodePlay | undefined>
   addNewPlayer: (userId: string, gameId: string) => Promise<CodePlay | undefined>
   countGamesByUserId: (userId: string | undefined) => Promise<void>
@@ -131,7 +131,9 @@ export const useGameStore = create<State & Action>((set, get) => ({
           if (draft) draft.numbers = value
         }),
       }))
+      return true
     }
+    return false
   },
   findUserJoined: async (userId, gameId) => {
     return await CodePlayDB.findByUserId(userId, gameId)

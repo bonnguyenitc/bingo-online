@@ -43,6 +43,12 @@ export default memo(function GameCard({ data, onChangeDone }: Props) {
           onClick={handleGoDetail}
           bg="main.4"
           color="main.1"
+          _hover={{
+            bg: 'main.4',
+          }}
+          _active={{
+            bg: 'main.4',
+          }}
         />
       </Flex>
       <Flex direction="column" w="100%">

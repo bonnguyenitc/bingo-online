@@ -31,7 +31,7 @@ export default memo(function NumberBox({ number, onDelete }: Props) {
           _active={{
             bg: 'main.1',
           }}>
-          {number}
+          {number < 10 ? '0' + number : number}
         </Button>
       </PopoverTrigger>
       {/* <PopoverContent w="180px" color="white" bg="main.2" borderColor="main.2">

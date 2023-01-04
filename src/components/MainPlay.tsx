@@ -81,7 +81,7 @@ export default memo(function MainPlay() {
           control={control}
           name="code"
           w="300px"
-          placeholder="Type a code invite or code game"
+          placeholder="Type a code invitation or code game"
           size="lg"
           maxLength={255}
         />
@@ -91,7 +91,7 @@ export default memo(function MainPlay() {
           </HStack>
         )}
         <Text fontSize="sm" fontWeight="light">
-          Enter a code invited or entry code
+          Enter a code invitation or entry code
         </Text>
         <Box h="5" />
         <PrimaryButton

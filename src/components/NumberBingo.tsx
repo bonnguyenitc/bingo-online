@@ -18,7 +18,7 @@ export default memo(function NumberBingo({ number, active }: Props) {
       borderColor="main.2"
       borderWidth={1}>
       <Text fontSize="2xl" color={active ? 'textLight' : 'text'} fontWeight="bold">
-        {number}
+        {number < 10 ? '0' + number : number}
       </Text>
     </Center>
   )

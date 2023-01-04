@@ -2,7 +2,7 @@
 
 #### Features
 
-- Create game, join game by code invition or entry code
+- Create game, join game by code invitation or entry code
 - Create team to play together
 
 #### Settings
