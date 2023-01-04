@@ -48,9 +48,9 @@ export const useAuthenticate = () => {
     const { data } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_OUT' || event === 'USER_DELETED') {
         setUser(null)
-        const expires = new Date(0).toUTCString()
-        document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-        document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
+        // const expires = new Date(0).toUTCString()
+        // document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
+        // document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
         if (router.pathname !== '/') {
           return router.replace('/')
         }
@@ -69,9 +69,9 @@ export const useAuthenticate = () => {
           provider: userSession?.app_metadata?.provider,
         })
         hideLoading()
-        const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
-        document.cookie = `my-access-token=${access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-        document.cookie = `my-refresh-token=${refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+        // const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
+        // document.cookie = `my-access-token=${access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+        // document.cookie = `my-refresh-token=${refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
       }
     })
 
