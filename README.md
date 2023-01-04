@@ -1,6 +1,11 @@
 ## Bingo Online by NextJS and Supabase
 
-#### Config
+#### Features
+
+- Create game, join game by code invition or entry code
+- Create team to play together
+
+#### Settings
 
 - Create account at [supabase.com](supabase.com)
 - Create database follow [ERD image](https://github.com/bonnguyenitc/bingo-online/blob/main/dist/db/bingo-erd.png)
