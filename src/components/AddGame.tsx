@@ -15,6 +15,7 @@ import ErrorText from './ErrorText'
 import { usePolicyStore } from '../store/usePolicyStore'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
 import PrimaryButton from './PrimaryButton'
+import { FaCheckCircle } from 'react-icons/fa'
 
 type FormData = {
   name: string
@@ -170,7 +171,7 @@ export default memo(function AddGame() {
                   <PrimaryButton
                     onClick={() => handleChoiceGroup(t.id)}
                     w="auto"
-                    bg={team?.includes(t.id) ? 'darkgreen' : 'main.2'}>
+                    rightIcon={team?.includes(t.id) ? <FaCheckCircle /> : <Box display="none" />}>
                     <Text color="main.4" fontWeight="semibold" fontSize="md">
                       {t.name}
                     </Text>
