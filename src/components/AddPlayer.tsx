@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { HStack, useToast, VStack } from '@chakra-ui/react'
+import { HStack, VStack } from '@chakra-ui/react'
 import { FaPlus } from 'react-icons/fa'
 import { useGameStore, useLoadingStore, useTeamStore, useUserStore } from '../store'
 import { useCallback } from 'react'
@@ -9,6 +9,7 @@ import * as yup from 'yup'
 import ErrorText from './ErrorText'
 import PrimaryIconButton from './PrimaryIconButton'
 import TextInput from './TextInput'
+import { useToast } from '../hooks'
 
 type Props = { gameId: string }
 
@@ -26,7 +27,7 @@ export default memo(function AddPlayer({ gameId }: Props) {
   const getUserByEmail = useUserStore(state => state.getUserByEmail)
   const addNewPlayer = useGameStore(state => state.addNewPlayer)
   const { getPlayersOfGame } = useTeamStore()
-  const toast = useToast()
+  const { toastError, toastSuccess } = useToast()
 
   const {
     handleSubmit,
@@ -43,45 +44,21 @@ export default memo(function AddPlayer({ gameId }: Props) {
       const user = await getUserByEmail(email)
       if (!user) {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'This user not existed',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('This user not existed')
       }
       const playerExisted = await findUserJoined(user.id, gameId)
       if (playerExisted) {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'This user has joined this game',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('This user has joined this game')
       }
       const newPlayer = await addNewPlayer(user.id, gameId)
       if (newPlayer) {
         hideLoading()
         getPlayersOfGame(gameId)
-        return toast({
-          title: 'Success',
-          description: 'Added new player',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastSuccess('Added new player')
       }
       hideLoading()
-      return toast({
-        title: 'Warning',
-        description: 'Add player failed',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      })
+      return toastError('Add player failed')
     },
     [
       addNewPlayer,
@@ -90,8 +67,9 @@ export default memo(function AddPlayer({ gameId }: Props) {
       getUserByEmail,
       hideLoading,
       showLoading,
-      toast,
+      toastError,
       getPlayersOfGame,
+      toastSuccess,
     ],
   )
 

@@ -2,7 +2,6 @@ import React, { memo } from 'react'
 import { Box, Text, Stack, HStack, useTheme } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
-import { useToast } from '@chakra-ui/react'
 import { useRoundStore, useUserStore } from '../store'
 import { useCallback } from 'react'
 import Screen from './Screen'
@@ -11,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
-import { useLoading } from '../hooks'
+import { useLoading, useToast } from '../hooks'
 import PrimaryButton from './PrimaryButton'
 import TextInput from './TextInput'
 
@@ -31,7 +30,7 @@ export default memo(function MainPlay() {
 
   const theme = useTheme()
 
-  const toast = useToast()
+  const { toastError } = useToast()
 
   const {
     handleSubmit,
@@ -49,17 +48,11 @@ export default memo(function MainPlay() {
       const round = await joinRound(code, user.id)
       hideLoading()
       if (round?.error) {
-        return toast({
-          title: 'Warning',
-          description: round.error,
-          status: 'warning',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError(round.error)
       }
       return router.push('/play')
     },
-    [joinRound, router, toast, user, hideLoading, showLoading],
+    [joinRound, router, toastError, user, hideLoading, showLoading],
   )
 
   return (

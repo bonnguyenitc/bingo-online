@@ -1,4 +1,4 @@
-import { Text, VStack, HStack, useToast, Box } from '@chakra-ui/react'
+import { Text, VStack, HStack, Box } from '@chakra-ui/react'
 import React, { memo, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import ItemMember from './ItemMember'
@@ -11,6 +11,7 @@ import * as yup from 'yup'
 import ErrorText from './ErrorText'
 import PrimaryIconButton from './PrimaryIconButton'
 import TextInput from './TextInput'
+import { useToast } from '../hooks'
 
 type FormData = {
   name: string
@@ -59,7 +60,7 @@ export default memo(function TeamDetail({ teamId }: Props) {
     resolver: yupResolver(scheme),
   })
 
-  const toast = useToast()
+  const { toastError, toastSuccess } = useToast()
 
   const removeMember = useCallback(
     (id: string) => async () => {
@@ -80,23 +81,11 @@ export default memo(function TeamDetail({ teamId }: Props) {
       const user = await getUserByEmail(name, 'id')
       if (!user) {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'User not exists',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('User not exists')
       }
       if (user.id === self?.id) {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'Can not add self',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('Can not add self')
       }
       const memberExist = await findMemberExistInTeam(user.id, teamId)
       if (memberExist) {
@@ -105,45 +94,21 @@ export default memo(function TeamDetail({ teamId }: Props) {
           if (userUpdated) {
             getMemberOfTeam(teamId)
             hideLoading()
-            return toast({
-              title: '',
-              description: 'Added success',
-              status: 'success',
-              duration: 3000,
-              isClosable: true,
-            })
+            return toastSuccess('Added success')
           }
         } else {
           hideLoading()
-          return toast({
-            title: 'Warning',
-            description: 'Member already exists',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          })
+          return toastError('Member already exists')
         }
       }
       const newMember = await addMemberForTeam({ user_id: user.id, team_id: teamId })
       if (newMember) {
         getMemberOfTeam(teamId)
         hideLoading()
-        return toast({
-          title: '',
-          description: 'Added success',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastSuccess('Added success')
       } else {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'There is an error, please try again',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('There is an error, please try again')
       }
     },
     [
@@ -155,8 +120,9 @@ export default memo(function TeamDetail({ teamId }: Props) {
       self?.id,
       showLoading,
       teamId,
-      toast,
+      toastError,
       updateMemberById,
+      toastSuccess,
     ],
   )
 

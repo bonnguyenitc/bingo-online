@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Text, VStack, useToast, HStack, Box, Wrap, WrapItem } from '@chakra-ui/react'
+import { Text, VStack, HStack, Box, Wrap, WrapItem } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import { useTeamStore, useLoadingStore, useUserStore, useGameStore } from '../store'
 import { useCallback } from 'react'
@@ -17,6 +17,7 @@ import { REGEX_LETTER_NUMBER } from '../utils/constans'
 import PrimaryButton from './PrimaryButton'
 import { FaCheckCircle } from 'react-icons/fa'
 import TextInput from './TextInput'
+import { useToast } from '../hooks'
 
 type FormData = {
   name: string
@@ -59,7 +60,7 @@ export default memo(function AddGame() {
 
   const router = useRouter()
 
-  const toast = useToast()
+  const { toastError } = useToast()
 
   useEffect(() => {
     countGamesByUserId(user?.id)
@@ -70,22 +71,10 @@ export default memo(function AddGame() {
       if (!user || !policy) return
       const { name } = data
       if (!policy.can_create_game) {
-        return toast({
-          title: 'Warning',
-          description: 'You can not create game',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('You can not create game')
       }
       if (policy.number_game_can_create === amountGameCreated) {
-        return toast({
-          title: 'Warning',
-          description: 'You can not create game',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('You can not create game')
       }
       showLoading()
       const game: any = await createGame(
@@ -99,19 +88,23 @@ export default memo(function AddGame() {
       )
       hideLoading()
       if (game?.error) {
-        return toast({
-          title: 'Warning',
-          description: game.error,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError(game.error)
       }
       if (game) {
         router.push('/games/' + game.id)
       }
     },
-    [user, policy, amountGameCreated, showLoading, createGame, team, hideLoading, toast, router],
+    [
+      user,
+      policy,
+      amountGameCreated,
+      showLoading,
+      createGame,
+      team,
+      hideLoading,
+      toastError,
+      router,
+    ],
   )
 
   const handleChoiceGroup = useCallback(

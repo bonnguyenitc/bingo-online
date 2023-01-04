@@ -1,4 +1,4 @@
-import { VStack, useToast, Text, Box, HStack } from '@chakra-ui/react'
+import { VStack, Text, Box, HStack } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import React, { memo, useCallback } from 'react'
 import { useTeamStore, useLoadingStore, useUserStore } from '../store'
@@ -11,6 +11,7 @@ import ErrorText from './ErrorText'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
 import PrimaryButton from './PrimaryButton'
 import TextInput from './TextInput'
+import { useToast } from '../hooks'
 
 type FormData = {
   name: string
@@ -30,7 +31,7 @@ export default memo(function AddTeam() {
   const checkNameTeam = useTeamStore(state => state.checkNameTeam)
   const user = useUserStore(state => state.user)
   const router = useRouter()
-  const toast = useToast()
+  const { toastError } = useToast()
   const policy = usePolicyStore(state => state.policy)
 
   const {
@@ -47,34 +48,16 @@ export default memo(function AddTeam() {
     async (data: FormData) => {
       const { name } = data
       if (!policy?.can_create_team || !user) {
-        return toast({
-          title: 'Warning',
-          description: 'You are not allowed to use this function',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('You are not allowed to use this function')
       }
       if (policy?.number_team_can_create === teams?.length) {
-        return toast({
-          title: 'Warning',
-          description: `Max ${policy?.number_team_can_create} teams`,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError(`Max ${policy?.number_team_can_create} teams`)
       }
       showLoading()
       const teamExisted = await checkNameTeam(name)
       if (teamExisted) {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'Please type an another team name',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('Please type an another team name')
       }
       const team = await createTeam({ name, user_id: user.id })
       if (team) {
@@ -82,13 +65,7 @@ export default memo(function AddTeam() {
         return router.back()
       } else {
         hideLoading()
-        return toast({
-          title: 'Warning',
-          description: 'An error occurred',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        })
+        return toastError('An error occurred')
       }
     },
     [
@@ -99,7 +76,7 @@ export default memo(function AddTeam() {
       showLoading,
       checkNameTeam,
       createTeam,
-      toast,
+      toastError,
       hideLoading,
       router,
     ],
