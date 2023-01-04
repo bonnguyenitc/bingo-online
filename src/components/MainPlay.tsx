@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Box, Text, Stack, Input, HStack, useTheme } from '@chakra-ui/react'
+import { Box, Text, Stack, HStack, useTheme } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useToast } from '@chakra-ui/react'
@@ -7,19 +7,20 @@ import { useRoundStore, useUserStore } from '../store'
 import { useCallback } from 'react'
 import Screen from './Screen'
 import If from './If'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
 import { useLoading } from '../hooks'
 import PrimaryButton from './PrimaryButton'
+import TextInput from './TextInput'
 
 type FormData = {
   code: string
 }
 
 const scheme = yup.object({
-  code: yup.string().required('Please enter a code').max(255),
+  code: yup.string().required('Please type a code').max(255),
 })
 
 export default memo(function MainPlay() {
@@ -83,22 +84,13 @@ export default memo(function MainPlay() {
         }
       />
       <Stack w="300px">
-        <Controller
+        <TextInput
           control={control}
           name="code"
-          render={({ field: { onBlur, onChange } }) => (
-            <Input
-              w="300px"
-              onChange={onChange}
-              onBlur={onBlur}
-              placeholder="Type a code invite or code game"
-              size="lg"
-              color="text"
-              maxLength={255}
-              borderColor="main.2"
-              focusBorderColor="main.1"
-            />
-          )}
+          w="300px"
+          placeholder="Type a code invite or code game"
+          size="lg"
+          maxLength={255}
         />
         {errors.code?.message && (
           <HStack w="300px">

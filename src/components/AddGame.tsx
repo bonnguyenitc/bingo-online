@@ -1,11 +1,11 @@
 import React, { memo, useEffect, useState } from 'react'
-import { Text, VStack, Input, useToast, HStack, Box, Wrap, WrapItem } from '@chakra-ui/react'
+import { Text, VStack, useToast, HStack, Box, Wrap, WrapItem } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import { useTeamStore, useLoadingStore, useUserStore, useGameStore } from '../store'
 import { useCallback } from 'react'
 import Screen from './Screen'
 import If from './If'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Team } from '../db/v1'
@@ -16,6 +16,7 @@ import { usePolicyStore } from '../store/usePolicyStore'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
 import PrimaryButton from './PrimaryButton'
 import { FaCheckCircle } from 'react-icons/fa'
+import TextInput from './TextInput'
 
 type FormData = {
   name: string
@@ -24,7 +25,7 @@ type FormData = {
 const scheme = yup.object({
   name: yup
     .string()
-    .required('Please enter a name')
+    .required('Please type a name')
     .max(255)
     .matches(REGEX_LETTER_NUMBER, 'Only allow characters and numbers'),
 })
@@ -129,22 +130,14 @@ export default memo(function AddGame() {
           Create new game
         </Text>
         <Box height="10px" />
-        <Controller
+        <TextInput
           control={control}
           name="name"
-          render={({ field: { onBlur, onChange } }) => (
-            <Input
-              w="300px"
-              onChange={onChange}
-              onBlur={onBlur}
-              placeholder="Type a name of game"
-              size="lg"
-              color="text"
-              borderColor="main.3"
-              focusBorderColor="main.3"
-              maxLength={255}
-            />
-          )}
+          w="300px"
+          placeholder="Type a name of game"
+          size="lg"
+          color="text"
+          maxLength={255}
         />
         {errors.name?.message && (
           <HStack w="300px">

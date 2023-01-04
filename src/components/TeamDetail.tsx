@@ -1,22 +1,23 @@
-import { Text, VStack, Input, HStack, useToast, Box } from '@chakra-ui/react'
+import { Text, VStack, HStack, useToast, Box } from '@chakra-ui/react'
 import React, { memo, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import ItemMember from './ItemMember'
 import { useTeamStore, useLoadingStore, useUserStore } from '../store'
 import { useCallback } from 'react'
 import Screen from './Screen'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
 import PrimaryIconButton from './PrimaryIconButton'
+import TextInput from './TextInput'
 
 type FormData = {
   name: string
 }
 
 const scheme = yup.object({
-  name: yup.string().email().required('Please enter a name of member').max(255),
+  name: yup.string().email('Please type a valid email').required('Please type an email').max(255),
 })
 
 type Props = {
@@ -168,23 +169,14 @@ export default memo(function TeamDetail({ teamId }: Props) {
       <Box height="10px" />
       <VStack color="main.4" fontSize="xl" flex={1}>
         <HStack spacing="4">
-          <Controller
+          <TextInput
             control={control}
             name="name"
-            render={({ field: { onBlur, onChange } }) => (
-              <Input
-                w="300px"
-                onChange={onChange}
-                onBlur={onBlur}
-                name="name"
-                placeholder="Type a name of member"
-                size="md"
-                color="text"
-                borderColor="main.3"
-                focusBorderColor="main.3"
-                maxLength={255}
-              />
-            )}
+            w="300px"
+            placeholder="Type an email of player"
+            size="md"
+            color="text"
+            maxLength={255}
           />
           <PrimaryIconButton
             aria-label="add-member"

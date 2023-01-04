@@ -1,15 +1,16 @@
-import { Input, VStack, useToast, Text, Box, HStack } from '@chakra-ui/react'
+import { VStack, useToast, Text, Box, HStack } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import React, { memo, useCallback } from 'react'
 import { useTeamStore, useLoadingStore, useUserStore } from '../store'
 import Screen from './Screen'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { usePolicyStore } from '../store/usePolicyStore'
 import ErrorText from './ErrorText'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
 import PrimaryButton from './PrimaryButton'
+import TextInput from './TextInput'
 
 type FormData = {
   name: string
@@ -18,7 +19,7 @@ type FormData = {
 const scheme = yup.object({
   name: yup
     .string()
-    .required('Please enter a team name')
+    .required('Please type a team name')
     .max(255)
     .matches(REGEX_LETTER_NUMBER, 'Only allow characters and numbers'),
 })
@@ -112,22 +113,14 @@ export default memo(function AddTeam() {
       </Text>
       <Box height="10px" />
       <VStack flex={1}>
-        <Controller
-          name="name"
+        <TextInput
           control={control}
-          render={({ field: { onBlur, onChange } }) => (
-            <Input
-              w="300px"
-              onChange={onChange}
-              onBlur={onBlur}
-              placeholder="Type a team name"
-              size="lg"
-              color="text"
-              borderColor="main.3"
-              focusBorderColor="main.3"
-              maxLength={255}
-            />
-          )}
+          name="name"
+          w="300px"
+          placeholder="Type a team name"
+          size="lg"
+          color="text"
+          maxLength={255}
         />
         {errors.name?.message && (
           <HStack w="300px">

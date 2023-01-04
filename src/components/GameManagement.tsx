@@ -277,6 +277,9 @@ export default memo(function GameManagement({ id }: Props) {
           </HStack>
           <PrimaryIconButton aria-label="copy" icon={<FaUsers />} onClick={onOpen} />
         </HStack>
+        <Text color="text" fontSize="xs">
+          Send code for players join to play this game
+        </Text>
         <If
           condition={game.team_play_game && game.team_play_game?.length > 0}
           component={
@@ -377,6 +380,9 @@ export default memo(function GameManagement({ id }: Props) {
             </Text>
           </Button>
         </Flex>
+        <Text color="text" fontSize="xs">
+          Click to start generate bingo numbers now
+        </Text>
         <Box height="8px" />
         <If
           condition={policy?.add_number_by_input}
