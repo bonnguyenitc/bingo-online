@@ -1,12 +1,13 @@
 import React, { memo } from 'react'
-import { Input, HStack, IconButton, useToast, VStack } from '@chakra-ui/react'
-import { FaPlusCircle } from 'react-icons/fa'
+import { Input, HStack, useToast, VStack } from '@chakra-ui/react'
+import { FaPlus } from 'react-icons/fa'
 import { useGameStore, useLoadingStore, useTeamStore, useUserStore } from '../store'
 import { useCallback } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
+import PrimaryIconButton from './PrimaryIconButton'
 
 type Props = { gameId: string }
 
@@ -112,14 +113,11 @@ export default memo(function AddPlayer({ gameId }: Props) {
             />
           )}
         />
-        <IconButton
+        <PrimaryIconButton
           aria-label="add-player"
           disabled={Boolean(errors.email?.message)}
           onClick={handleSubmit(addMember)}
-          colorScheme="teal"
-          icon={<FaPlusCircle />}
-          bg="main.3"
-          color="main.4"
+          icon={<FaPlus />}
         />
       </HStack>
       {errors.email?.message && <ErrorText message={errors.email.message} />}

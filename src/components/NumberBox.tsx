@@ -24,7 +24,6 @@ export default memo(function NumberBox({ number, onDelete }: Props) {
           mb="4"
           fontWeight="medium"
           fontSize="xl"
-          colorScheme="teal"
           color="textLight">
           {number}
         </Button>

@@ -1,9 +1,11 @@
-import { Box, Flex, FormLabel, IconButton, Spacer, Switch, Text } from '@chakra-ui/react'
+import { Box, Flex, FormLabel, Spacer, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import React, { memo, useCallback } from 'react'
-import { FaArrowCircleRight } from 'react-icons/fa'
+import { FaArrowRight } from 'react-icons/fa'
 import { useGameStore } from '../store'
 import { Game } from '../db/v1'
+import PrimaryIconButton from './PrimaryIconButton'
+import PrimarySwitch from './PrimarySwitch'
 
 type Props = {
   data: Game
@@ -35,21 +37,19 @@ export default memo(function GameCard({ data, onChangeDone }: Props) {
           {data?.name}
         </Text>
         <Spacer />
-        <IconButton
-          colorScheme="teal"
+        <PrimaryIconButton
           aria-label="open-round"
-          icon={<FaArrowCircleRight />}
-          borderRadius="full"
-          bg="main.3"
-          color="main.4"
+          icon={<FaArrowRight />}
           onClick={handleGoDetail}
+          bg="main.4"
+          color="main.1"
         />
       </Flex>
       <Flex direction="column" w="100%">
         <FormLabel color="textLight" fontSize="xs">
           Mark the game as the end
         </FormLabel>
-        <Switch colorScheme="teal" isChecked={data?.completed} onChange={handleChange} />
+        <PrimarySwitch isChecked={data?.completed} onChange={handleChange} />
       </Flex>
     </Box>
   )

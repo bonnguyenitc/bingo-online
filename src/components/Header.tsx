@@ -1,4 +1,4 @@
-import { IconButton, Flex, useColorMode, Avatar, Text, HStack, Box } from '@chakra-ui/react'
+import { Flex, useColorMode, Avatar, Text, HStack, Box } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import { memo, useCallback, useMemo } from 'react'
 import { FaSun, FaMoon, FaSignOutAlt, FaArrowLeft } from 'react-icons/fa'
@@ -7,6 +7,7 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import Head from 'next/head'
 import styles from '../styles/Layout.module.css'
 import Link from 'next/link'
+import PrimaryIconButton from './PrimaryIconButton'
 
 type Props = {
   hasBack?: boolean
@@ -38,7 +39,7 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
         <title>{title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <HStack bg="main.3" px="4" w="md" justifyContent="space-between" alignItems="center">
+      <HStack bg="main.2" px="4" w="md" justifyContent="space-between" alignItems="center">
         <Link href="/">
           <Text fontSize="3xl" color="white">
             Bingo
@@ -58,20 +59,16 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
               </Text>
             </>
           )}
-          <IconButton
-            colorScheme="teal"
+          <PrimaryIconButton
             aria-label="change-theme"
             ml="2"
-            bg="main.3"
             icon={icon}
             onClick={toggleColorMode}
           />
           {!!user && (
-            <IconButton
-              colorScheme="teal"
+            <PrimaryIconButton
               aria-label="log-out"
               ml="2"
-              bg="main.3"
               icon={<FaSignOutAlt />}
               onClick={signOut}
             />
@@ -81,15 +78,7 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
       {hasBack && (
         <HStack className={styles.mt0} py="4" px="4" background="background" width="md">
           {!isHome && (
-            <IconButton
-              onClick={router.back}
-              aria-label="go-back"
-              icon={<FaArrowLeft />}
-              colorScheme="teal"
-              variant="solid"
-              borderRadius="full"
-              background="main.3"
-            />
+            <PrimaryIconButton onClick={router.back} aria-label="go-back" icon={<FaArrowLeft />} />
           )}
           <Box pl="4">
             <Text fontSize="xl" noOfLines={1} fontWeight="bold">

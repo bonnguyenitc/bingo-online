@@ -5,10 +5,8 @@ import {
   Box,
   FormControl,
   FormLabel,
-  Switch,
   Spacer,
   Text,
-  IconButton,
   NumberInputField,
   NumberInput,
   Alert,
@@ -20,11 +18,10 @@ import {
   OrderedList,
   ListItem,
   HStack,
-  Divider,
   useDisclosure,
 } from '@chakra-ui/react'
 import { useGetGame } from '../hooks/useGetGame'
-import { FaCopy, FaPlusCircle, FaFileExport, FaUsers } from 'react-icons/fa'
+import { FaCopy, FaPlus, FaFileExport, FaUsers } from 'react-icons/fa'
 import NumberBox from './NumberBox'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
@@ -37,6 +34,8 @@ import { delay } from '../utils/helpers'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Round } from '../db/v1'
 import PlayersDrawer from './PlayersDrawer'
+import PrimaryIconButton from './PrimaryIconButton'
+import PrimarySwitch from './PrimarySwitch'
 
 const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 const fileExtension = '.xlsx'
@@ -249,45 +248,38 @@ export default memo(function GameManagement({ id }: Props) {
 
   return (
     <Screen>
-      <VStack px="4" flex={1} alignItems="flex-start" fontWeight="bold" w="100%" color="text">
-        <Box height="10px" />
-        <Flex w="100%" fontSize="2xl" fontWeight="bold" justifyContent="center">
+      <VStack px="4" flex={1} alignItems="flex-start" fontWeight="bold" w="100%" color="textLight">
+        <Flex
+          w="100%"
+          fontSize="2xl"
+          fontWeight="bold"
+          justifyContent="center"
+          bg="main.2"
+          borderRadius="12px"
+          py="18px"
+          px="8px">
           <Text>{game.name}</Text>
         </Flex>
-        <Box height="10px" />
-        <Divider />
-        <HStack w="100%" alignItems="center">
-          <Text mr="8" fontSize="xl" fontWeight="semibold">
-            {game.entry_code}
-          </Text>
-          <IconButton
-            colorScheme="teal"
-            aria-label="copy"
-            icon={<FaCopy />}
-            onClick={onCopy}
-            bg="main.3"
-            color="main.4"
-          />
+        <HStack
+          w="100%"
+          alignItems="center"
+          bg="main.2"
+          borderRadius="12px"
+          py="18px"
+          px="8px"
+          justifyContent="space-between">
+          <HStack>
+            <Text mr="4px" fontSize="xl" fontWeight="semibold">
+              {game.entry_code}
+            </Text>
+            <PrimaryIconButton aria-label="copy" icon={<FaCopy />} onClick={onCopy} />
+          </HStack>
+          <PrimaryIconButton aria-label="copy" icon={<FaUsers />} onClick={onOpen} />
         </HStack>
-        <Box height="10px" />
-        <Divider />
-        <Box height="10px" />
-        <Flex w="100%" alignItems="center">
-          <IconButton
-            colorScheme="teal"
-            aria-label="copy"
-            icon={<FaUsers />}
-            onClick={onOpen}
-            bg="main.3"
-            color="main.4"
-          />
-        </Flex>
-        <Box height="10px" />
-        <Divider />
         <If
           condition={game.team_play_game && game.team_play_game?.length > 0}
           component={
-            <>
+            <VStack bg="main.2" borderRadius="12px" py="18px" px="8px">
               <Text mr="8" fontSize="xl" fontWeight="semibold">
                 Teams joined
               </Text>
@@ -300,60 +292,56 @@ export default memo(function GameManagement({ id }: Props) {
                   </Box>
                 ))}
               </Wrap>
-            </>
+            </VStack>
           }
+          fallback={null}
         />
-        <Box height="4px" />
-        <VStack w="100%" alignItems="flex-start">
+        <HStack
+          w="100%"
+          justifyContent="space-between"
+          bg="main.2"
+          borderRadius="12px"
+          py="18px"
+          px="8px">
           <Text fontSize="md" fontWeight="semibold">
             Download players
           </Text>
-          <IconButton
-            colorScheme="teal"
-            aria-label="export"
-            icon={<FaFileExport />}
-            onClick={onExportCsv}
-            bg="main.3"
-            color="main.4"
-          />
+          <PrimaryIconButton aria-label="export" icon={<FaFileExport />} onClick={onExportCsv} />
+        </HStack>
+        <VStack w="100%" bg="main.2" borderRadius="12px" py="18px" px="8px">
+          <Flex w="100%">
+            <FormControl display="flex" alignItems="center">
+              <FormLabel htmlFor="stop-register" mb="0">
+                Allow other players to join
+              </FormLabel>
+              <Spacer />
+              {typeof game.open_register === 'boolean' && (
+                <PrimarySwitch
+                  name="stop-register"
+                  isChecked={game.open_register}
+                  onChange={onChangeRegister}
+                />
+              )}
+            </FormControl>
+          </Flex>
+          <Box height="12px" />
+          <Flex w="100%">
+            <FormControl display="flex" alignItems="center">
+              <FormLabel htmlFor="stop-register" mb="0">
+                Mark the game as the end
+              </FormLabel>
+              <Spacer />
+              {typeof game.completed === 'boolean' && (
+                <PrimarySwitch
+                  name="stop-register"
+                  isChecked={game.completed}
+                  onChange={onChangeDone}
+                />
+              )}
+            </FormControl>
+          </Flex>
         </VStack>
-        <Box height="10px" />
-        <Divider />
-        <Flex w="100%" py="4">
-          <FormControl display="flex" alignItems="center">
-            <FormLabel htmlFor="stop-register" mb="0">
-              Allow other players to join
-            </FormLabel>
-            <Spacer />
-            {typeof game.open_register === 'boolean' && (
-              <Switch
-                name="stop-register"
-                colorScheme="teal"
-                isChecked={game.open_register}
-                onChange={onChangeRegister}
-              />
-            )}
-          </FormControl>
-        </Flex>
-        <Flex w="100%">
-          <FormControl display="flex" alignItems="center">
-            <FormLabel htmlFor="stop-register" mb="0">
-              Mark the game as the end
-            </FormLabel>
-            <Spacer />
-            {typeof game.completed === 'boolean' && (
-              <Switch
-                name="stop-register"
-                colorScheme="teal"
-                isChecked={game.completed}
-                onChange={onChangeDone}
-              />
-            )}
-          </FormControl>
-        </Flex>
-        <Box height="10px" />
-        <Divider />
-        <Flex w="100%" flexDirection="column">
+        <VStack w="100%" alignItems="flex-start" bg="main.2" borderRadius="12px" py="18px" px="8px">
           <Text fontSize="xl" fontWeight="semibold">
             Winners
           </Text>
@@ -376,18 +364,15 @@ export default memo(function GameManagement({ id }: Props) {
               </Text>
             }
           />
-        </Flex>
-        <Box height="10px" />
-        <Divider />
-        <Flex flexDirection="column">
+        </VStack>
+        <Box height="18px" />
+        <Flex>
           <Button colorScheme="cyan" onClick={handleBingo}>
             <Text fontSize="2xl" color="textLight">
               Bingo
             </Text>
           </Button>
         </Flex>
-        <Box height="10px" />
-        <Divider />
         <Flex w="100%" alignItems="center" justifyContent="space-between">
           <NumberInput
             borderColor="main.3"
@@ -400,35 +385,36 @@ export default memo(function GameManagement({ id }: Props) {
             clampValueOnBlur={true}
             inputMode="numeric"
             onChange={onChangeNumber}>
-            <NumberInputField placeholder="Type a number" color="text" />
+            <NumberInputField placeholder="Type a number" color="text" fontWeight="semibold" />
           </NumberInput>
-          <IconButton
+          <PrimaryIconButton
             disabled={number === 0}
             aria-label="add-number-bingo"
             ml="4"
-            colorScheme="teal"
-            icon={<FaPlusCircle />}
+            icon={<FaPlus />}
             onClick={addNumber}
-            bg="main.3"
-            color="main.4"
           />
         </Flex>
         {err && (
           <Alert status="error">
             <AlertIcon />
-            <Text fontSize="lg" fontWeight="light">
+            <Text fontSize="lg" color="text" fontWeight="light">
               {err}
             </Text>
-            <CloseButton onClick={resetError} position="absolute" right="8px" top="8px" />
+            <CloseButton
+              onClick={resetError}
+              position="absolute"
+              color="text"
+              right="8px"
+              top="8px"
+            />
           </Alert>
         )}
-        <Box height="10px" />
         <Wrap w="100%">
           {numbers.map(num => (
             <NumberBox number={num} key={num} onDelete={removeNumber} />
           ))}
         </Wrap>
-        <Box height="10px" />
       </VStack>
       <PlayersDrawer gameId={game.id} isOpen={isOpen} onClose={onClose} />
     </Screen>

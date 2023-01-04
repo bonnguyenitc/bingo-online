@@ -1,6 +1,6 @@
-import { Text, VStack, Input, HStack, IconButton, useToast, Box } from '@chakra-ui/react'
+import { Text, VStack, Input, HStack, useToast, Box } from '@chakra-ui/react'
 import React, { memo, useEffect } from 'react'
-import { FaPlusCircle } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import ItemMember from './ItemMember'
 import { useTeamStore, useLoadingStore, useUserStore } from '../store'
 import { useCallback } from 'react'
@@ -9,6 +9,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
+import PrimaryIconButton from './PrimaryIconButton'
 
 type FormData = {
   name: string
@@ -185,12 +186,11 @@ export default memo(function TeamDetail({ teamId }: Props) {
               />
             )}
           />
-          <IconButton
+          <PrimaryIconButton
             aria-label="add-member"
             disabled={Boolean(errors.name?.message)}
             onClick={handleSubmit(addMember)}
-            colorScheme="teal"
-            icon={<FaPlusCircle />}
+            icon={<FaPlus />}
           />
         </HStack>
         {errors.name?.message && (

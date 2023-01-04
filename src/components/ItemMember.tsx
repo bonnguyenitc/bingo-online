@@ -1,7 +1,8 @@
-import { Box, HStack, IconButton, Text } from '@chakra-ui/react'
+import { Box, HStack, Text } from '@chakra-ui/react'
 import React, { memo } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { Member } from '../db/v1'
+import PrimaryIconButton from './PrimaryIconButton'
 
 type Props = {
   data: Member
@@ -23,12 +24,7 @@ export default memo(function ItemMember({ data, index, onDelete }: Props) {
         </Text>
       </Box>
       <HStack flex={2} justifyContent="flex-end">
-        <IconButton
-          aria-label="delete-member"
-          onClick={onDelete}
-          colorScheme="red"
-          icon={<FaRegTrashAlt />}
-        />
+        <PrimaryIconButton aria-label="delete-member" onClick={onDelete} icon={<FaRegTrashAlt />} />
       </HStack>
     </HStack>
   )

@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
-import { Box, HStack, Switch, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack, Text, VStack } from '@chakra-ui/react'
 import GameCard from './GameCard'
 import { useGameStore, useUserStore } from '../store'
 import { useCallback } from 'react'
@@ -7,6 +7,7 @@ import Screen from './Screen'
 import If from './If'
 import Link from 'next/link'
 import { useLoading } from '../hooks'
+import PrimarySwitch from './PrimarySwitch'
 
 export default memo(function Games() {
   const user = useUserStore(state => state.user)
@@ -62,7 +63,7 @@ export default memo(function Games() {
         <Text color="text" fontSize="md" fontWeight="semibold">
           Only uncompleted
         </Text>
-        <Switch colorScheme="teal" onChange={handleToggleFilterGame} />
+        <PrimarySwitch onChange={handleToggleFilterGame} />
       </HStack>
       <Box height="10px" />
       <VStack flex={1} px="4" width="100%" pb="4">

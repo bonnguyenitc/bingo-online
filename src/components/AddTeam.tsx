@@ -137,7 +137,6 @@ export default memo(function AddTeam() {
         <Button
           disabled={Boolean(errors.name?.message)}
           loadingText="Đang vào"
-          colorScheme="teal"
           variant="solid"
           size="lg"
           w="300px"

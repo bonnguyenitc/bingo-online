@@ -1,9 +1,10 @@
-import { Box, Center, IconButton, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react'
+import { Box, Center, Text, VStack, Wrap, WrapItem } from '@chakra-ui/react'
 import Link from 'next/link'
 import React, { memo, useCallback, useEffect } from 'react'
-import { FaPlusCircle } from 'react-icons/fa'
+import { FaPlus } from 'react-icons/fa'
 import { useLoadingStore, useTeamStore, useUserStore } from '../store'
 import Screen from './Screen'
+import PrimaryIconButton from './PrimaryIconButton'
 
 export default memo(function Team() {
   const getTeams = useTeamStore(state => state.getTeams)
@@ -30,13 +31,7 @@ export default memo(function Team() {
       <Box height="10px" />
       <VStack flex={1} alignItems="flex-start" px="4" w="100%">
         <Link href="/teams/add" passHref>
-          <IconButton
-            colorScheme="teal"
-            aria-label="add"
-            bg="main.3"
-            color="main.4"
-            icon={<FaPlusCircle />}
-          />
+          <PrimaryIconButton aria-label="add" icon={<FaPlus />} />
         </Link>
         <Box height="10px" />
         <Wrap maxW="100%">

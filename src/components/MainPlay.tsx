@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Button, Box, Text, Stack, Input, HStack } from '@chakra-ui/react'
+import { Button, Box, Text, Stack, Input, HStack, useTheme } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useToast } from '@chakra-ui/react'
@@ -26,6 +26,8 @@ export default memo(function MainPlay() {
   const user = useUserStore(state => state.user)
   const joinRound = useRoundStore(state => state.joinRound)
   const { showLoading, hideLoading } = useLoading()
+
+  const theme = useTheme()
 
   const toast = useToast()
 
@@ -65,19 +67,43 @@ export default memo(function MainPlay() {
         component={
           <>
             <Link href="/games/add">
-              <Button color="textLight" variant="solid" size="lg" w="300px" colorScheme="teal">
+              <Button
+                color="textLight"
+                bg="main.2"
+                _hover={{
+                  bg: 'main.1',
+                }}
+                variant="solid"
+                size="lg"
+                w="300px">
                 New game
               </Button>
             </Link>
             <Box h="5" />
             <Link href="/games">
-              <Button color="textLight" variant="solid" size="lg" w="300px" colorScheme="teal">
+              <Button
+                color="textLight"
+                variant="solid"
+                size="lg"
+                w="300px"
+                bg="main.2"
+                _hover={{
+                  bg: 'main.1',
+                }}>
                 Games
               </Button>
             </Link>
             <Box h="5" />
             <Link href="/teams">
-              <Button color="textLight" variant="solid" size="lg" w="300px" colorScheme="teal">
+              <Button
+                color="textLight"
+                variant="solid"
+                size="lg"
+                w="300px"
+                bg="main.2"
+                _hover={{
+                  bg: 'main.1',
+                }}>
                 Teams
               </Button>
             </Link>
@@ -98,8 +124,8 @@ export default memo(function MainPlay() {
               size="lg"
               color="text"
               maxLength={255}
-              borderColor="main.3"
-              focusBorderColor="main.3"
+              borderColor="main.2"
+              focusBorderColor="main.1"
             />
           )}
         />
@@ -113,14 +139,16 @@ export default memo(function MainPlay() {
         </Text>
         <Box h="5" />
         <Button
-          colorScheme="teal"
           disabled={Boolean(errors.code?.message)}
           color="textLight"
           variant="solid"
-          background="main.3"
           size="lg"
           w="300px"
-          onClick={handleSubmit(handleJoinGame)}>
+          onClick={handleSubmit(handleJoinGame)}
+          bg="main.2"
+          _hover={{
+            bg: 'main.1',
+          }}>
           Play
         </Button>
       </Stack>

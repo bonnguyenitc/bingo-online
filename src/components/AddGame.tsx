@@ -24,6 +24,7 @@ import Link from 'next/link'
 import ErrorText from './ErrorText'
 import { usePolicyStore } from '../store/usePolicyStore'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
+import PrimaryButton from './PrimaryButton'
 
 type FormData = {
   name: string
@@ -160,33 +161,27 @@ export default memo(function AddGame() {
           </HStack>
         )}
         <Box height="10px" />
-        <Button
+        <PrimaryButton
           disabled={Boolean(errors.name?.message)}
-          colorScheme="teal"
-          variant="solid"
-          size="lg"
-          w="300px"
-          onClick={handleSubmit(createNewGame)}>
-          Create
-        </Button>
+          onClick={handleSubmit(createNewGame)}
+          label="Create"
+        />
         <Box height="10px" />
-        <HStack w="100%">
+        <HStack w="100%" px="16px">
           <Text fontWeight="bold">My Teams</Text>
         </HStack>
         <Box height="10px" />
         <If
           condition={teams.length > 0}
           component={
-            <Wrap pb="4" w="100%">
+            <Wrap pb="4" w="100%" px="16px">
               {teams.map((t: Team) => (
                 <WrapItem key={t.id}>
-                  <Button
-                    colorScheme={team.includes(t.id) ? 'orange' : 'teal'}
-                    onClick={() => handleChoiceGroup(t.id)}>
+                  <PrimaryButton onClick={() => handleChoiceGroup(t.id)} w="auto">
                     <Text color="main.4" fontWeight="semibold" fontSize="md">
                       {t.name}
                     </Text>
-                  </Button>
+                  </PrimaryButton>
                 </WrapItem>
               ))}
             </Wrap>

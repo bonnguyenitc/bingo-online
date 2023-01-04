@@ -41,7 +41,7 @@ const findByEmail = async (email: string, fields = `*,roles (*)`): Promise<User 
     .from(TABLE_NAME)
     .select(fields)
     .textSearch('email', `${email}`)
-  return data?.[0] || null
+  return (data?.[0] || null) as any
 }
 
 export const UserDB = {
