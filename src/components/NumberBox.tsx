@@ -19,12 +19,18 @@ export default memo(function NumberBox({ number, onDelete }: Props) {
     <Popover>
       <PopoverTrigger>
         <Button
-          background="main.1"
+          background="main.2"
           mr="4"
           mb="4"
           fontWeight="medium"
           fontSize="xl"
-          color="textLight">
+          color="textLight"
+          _hover={{
+            bg: 'main.1',
+          }}
+          _active={{
+            bg: 'main.1',
+          }}>
           {number}
         </Button>
       </PopoverTrigger>

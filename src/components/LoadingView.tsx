@@ -16,7 +16,7 @@ export default function LoadingView(props: Props) {
       <ModalOverlay />
       <ModalContent bg="transparent">
         <Center flex={1}>
-          <Spinner color="main.3" size="xl" />
+          <Spinner color="main.4" size="xl" />
         </Center>
       </ModalContent>
     </Modal>

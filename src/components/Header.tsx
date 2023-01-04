@@ -59,12 +59,12 @@ export default memo(function Header({ hasBack, title = 'Bingo Online', label }: 
               </Text>
             </>
           )}
-          <PrimaryIconButton
+          {/* <PrimaryIconButton
             aria-label="change-theme"
             ml="2"
             icon={icon}
             onClick={toggleColorMode}
-          />
+          /> */}
           {!!user && (
             <PrimaryIconButton
               aria-label="log-out"

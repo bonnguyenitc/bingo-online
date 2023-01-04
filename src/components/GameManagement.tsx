@@ -14,11 +14,11 @@ import {
   CloseButton,
   useClipboard,
   Wrap,
-  Button,
   OrderedList,
   ListItem,
   HStack,
   useDisclosure,
+  Button,
 } from '@chakra-ui/react'
 import { useGetGame } from '../hooks/useGetGame'
 import { FaCopy, FaPlus, FaFileExport, FaUsers } from 'react-icons/fa'
@@ -36,6 +36,7 @@ import { Round } from '../db/v1'
 import PlayersDrawer from './PlayersDrawer'
 import PrimaryIconButton from './PrimaryIconButton'
 import PrimarySwitch from './PrimarySwitch'
+import { usePolicyStore } from '../store/usePolicyStore'
 
 const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 const fileExtension = '.xlsx'
@@ -51,6 +52,8 @@ export default memo(function GameManagement({ id }: Props) {
   const { showLoading, hideLoading } = useLoadingStore()
   const exportMemberCsv = useTeamStore(state => state.getPlayersOfGame)
   const supabaseClient = useSupabaseClient()
+
+  const policy = usePolicyStore(state => state.policy)
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -348,15 +351,18 @@ export default memo(function GameManagement({ id }: Props) {
           <If
             condition={winners?.length > 0}
             component={
-              <OrderedList>
-                {winners?.map(winner => (
-                  <ListItem key={winner.id}>
-                    <Text fontSize="xl" fontWeight="semibold" color="text">
+              <>
+                {winners?.map((winner, index) => (
+                  <HStack key={winner.id}>
+                    <Text color="textLight" fontSize="md" fontWeight="semibold">
+                      {index + 1}.
+                    </Text>
+                    <Text color="textLight" fontSize="md" fontWeight="semibold">
                       {winner.users?.email}
                     </Text>
-                  </ListItem>
+                  </HStack>
                 ))}
-              </OrderedList>
+              </>
             }
             fallback={
               <Text fontWeight="light" fontSize="sm">
@@ -373,28 +379,35 @@ export default memo(function GameManagement({ id }: Props) {
             </Text>
           </Button>
         </Flex>
-        <Flex w="100%" alignItems="center" justifyContent="space-between">
-          <NumberInput
-            borderColor="main.3"
-            focusBorderColor="main.3"
-            size="md"
-            w="350px"
-            min={0}
-            max={NUMBER_MAX}
-            keepWithinRange={true}
-            clampValueOnBlur={true}
-            inputMode="numeric"
-            onChange={onChangeNumber}>
-            <NumberInputField placeholder="Type a number" color="text" fontWeight="semibold" />
-          </NumberInput>
-          <PrimaryIconButton
-            disabled={number === 0}
-            aria-label="add-number-bingo"
-            ml="4"
-            icon={<FaPlus />}
-            onClick={addNumber}
-          />
-        </Flex>
+        <Box height="8px" />
+        <If
+          condition={policy?.add_number_by_input}
+          component={
+            <Flex w="100%" alignItems="center" justifyContent="space-between">
+              <NumberInput
+                borderColor="main.3"
+                focusBorderColor="main.3"
+                size="md"
+                w="350px"
+                min={0}
+                max={NUMBER_MAX}
+                keepWithinRange={true}
+                clampValueOnBlur={true}
+                inputMode="numeric"
+                onChange={onChangeNumber}>
+                <NumberInputField placeholder="Type a number" color="text" fontWeight="semibold" />
+              </NumberInput>
+              <PrimaryIconButton
+                disabled={number === 0}
+                aria-label="add-number-bingo"
+                ml="4"
+                icon={<FaPlus />}
+                onClick={addNumber}
+              />
+            </Flex>
+          }
+          fallback={null}
+        />
         {err && (
           <Alert status="error">
             <AlertIcon />
@@ -410,6 +423,7 @@ export default memo(function GameManagement({ id }: Props) {
             />
           </Alert>
         )}
+        <Box height="8px" />
         <Wrap w="100%">
           {numbers.map(num => (
             <NumberBox number={num} key={num} onDelete={removeNumber} />

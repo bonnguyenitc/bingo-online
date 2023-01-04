@@ -1,15 +1,5 @@
 import React, { memo, useEffect, useState } from 'react'
-import {
-  Text,
-  VStack,
-  Input,
-  Button,
-  useToast,
-  HStack,
-  Box,
-  Wrap,
-  WrapItem,
-} from '@chakra-ui/react'
+import { Text, VStack, Input, useToast, HStack, Box, Wrap, WrapItem } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import { useTeamStore, useLoadingStore, useUserStore, useGameStore } from '../store'
 import { useCallback } from 'react'
@@ -132,7 +122,7 @@ export default memo(function AddGame() {
 
   return (
     <Screen>
-      <VStack flex={1} color="text" fontSize="xl">
+      <VStack flex={1} color="text" fontSize="xl" w="80%">
         <Box height="10px" />
         <Text color="text" fontSize="2xl" fontWeight="bold">
           Create new game
@@ -167,17 +157,20 @@ export default memo(function AddGame() {
           label="Create"
         />
         <Box height="10px" />
-        <HStack w="100%" px="16px">
+        <HStack w="100%">
           <Text fontWeight="bold">My Teams</Text>
         </HStack>
-        <Box height="10px" />
+        <Box height="4px" />
         <If
           condition={teams.length > 0}
           component={
-            <Wrap pb="4" w="100%" px="16px">
+            <Wrap pb="4" w="100%">
               {teams.map((t: Team) => (
                 <WrapItem key={t.id}>
-                  <PrimaryButton onClick={() => handleChoiceGroup(t.id)} w="auto">
+                  <PrimaryButton
+                    onClick={() => handleChoiceGroup(t.id)}
+                    w="auto"
+                    bg={team?.includes(t.id) ? 'darkgreen' : 'main.2'}>
                     <Text color="main.4" fontWeight="semibold" fontSize="md">
                       {t.name}
                     </Text>

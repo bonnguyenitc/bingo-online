@@ -1,4 +1,4 @@
-import { Input, VStack, Button, useToast, Text, Box, HStack } from '@chakra-ui/react'
+import { Input, VStack, useToast, Text, Box, HStack } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import React, { memo, useCallback } from 'react'
 import { useTeamStore, useLoadingStore, useUserStore } from '../store'
@@ -9,6 +9,7 @@ import * as yup from 'yup'
 import { usePolicyStore } from '../store/usePolicyStore'
 import ErrorText from './ErrorText'
 import { REGEX_LETTER_NUMBER } from '../utils/constans'
+import PrimaryButton from './PrimaryButton'
 
 type FormData = {
   name: string
@@ -134,15 +135,11 @@ export default memo(function AddTeam() {
           </HStack>
         )}
         <Box height="10px" />
-        <Button
+        <PrimaryButton
           disabled={Boolean(errors.name?.message)}
-          loadingText="Đang vào"
-          variant="solid"
-          size="lg"
-          w="300px"
           onClick={handleSubmit(handleCreateGroup)}>
           Create
-        </Button>
+        </PrimaryButton>
       </VStack>
     </Screen>
   )

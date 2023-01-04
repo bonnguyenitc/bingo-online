@@ -1,5 +1,5 @@
 import React, { memo } from 'react'
-import { Button, Box, Text, Stack, Input, HStack, useTheme } from '@chakra-ui/react'
+import { Box, Text, Stack, Input, HStack, useTheme } from '@chakra-ui/react'
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useToast } from '@chakra-ui/react'
@@ -12,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import ErrorText from './ErrorText'
 import { useLoading } from '../hooks'
+import PrimaryButton from './PrimaryButton'
 
 type FormData = {
   code: string
@@ -67,45 +68,15 @@ export default memo(function MainPlay() {
         component={
           <>
             <Link href="/games/add">
-              <Button
-                color="textLight"
-                bg="main.2"
-                _hover={{
-                  bg: 'main.1',
-                }}
-                variant="solid"
-                size="lg"
-                w="300px">
-                New game
-              </Button>
+              <PrimaryButton color="textLight">New game</PrimaryButton>
             </Link>
             <Box h="5" />
             <Link href="/games">
-              <Button
-                color="textLight"
-                variant="solid"
-                size="lg"
-                w="300px"
-                bg="main.2"
-                _hover={{
-                  bg: 'main.1',
-                }}>
-                Games
-              </Button>
+              <PrimaryButton color="textLight">Games</PrimaryButton>
             </Link>
             <Box h="5" />
             <Link href="/teams">
-              <Button
-                color="textLight"
-                variant="solid"
-                size="lg"
-                w="300px"
-                bg="main.2"
-                _hover={{
-                  bg: 'main.1',
-                }}>
-                Teams
-              </Button>
+              <PrimaryButton color="textLight">Teams</PrimaryButton>
             </Link>
             <Box h="5" />
           </>
@@ -138,19 +109,12 @@ export default memo(function MainPlay() {
           Enter a code invited or entry code
         </Text>
         <Box h="5" />
-        <Button
+        <PrimaryButton
           disabled={Boolean(errors.code?.message)}
           color="textLight"
-          variant="solid"
-          size="lg"
-          w="300px"
-          onClick={handleSubmit(handleJoinGame)}
-          bg="main.2"
-          _hover={{
-            bg: 'main.1',
-          }}>
+          onClick={handleSubmit(handleJoinGame)}>
           Play
-        </Button>
+        </PrimaryButton>
       </Stack>
     </Screen>
   )

@@ -6,6 +6,7 @@ export type Policy = {
   number_team_can_create: number
   can_create_game: boolean
   number_game_can_create: number
+  add_number_by_input: boolean
   deleted: boolean
 }
 
