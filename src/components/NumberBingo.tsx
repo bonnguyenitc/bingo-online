@@ -11,8 +11,13 @@ export default memo(function NumberBingo({ number, active }: Props) {
     return <Center bg="main.4" height="80px" />
   }
   return (
-    <Center bg={active ? 'main.3' : 'main.2'} height="80px" borderRadius="8px">
-      <Text fontSize="2xl" color={!active ? 'textLight' : 'text'} fontWeight="bold">
+    <Center
+      bg={!active ? 'main.4' : 'main.2'}
+      height="80px"
+      borderRadius="8px"
+      borderColor="main.2"
+      borderWidth={1}>
+      <Text fontSize="2xl" color={active ? 'textLight' : 'text'} fontWeight="bold">
         {number}
       </Text>
     </Center>

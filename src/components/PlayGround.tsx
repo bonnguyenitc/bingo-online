@@ -74,6 +74,9 @@ export default memo(function PlayGround() {
         <Text px="4" color="text" fontSize="2xl" fontWeight="bold" noOfLines={2}>
           {round.games?.name}
         </Text>
+        <Text color="text" fontSize="2xl" fontWeight="semibold" pt="4">
+          Bingo numbers
+        </Text>
         <Box height="10px" />
         <Wrap px="4">
           {result?.map(num => (

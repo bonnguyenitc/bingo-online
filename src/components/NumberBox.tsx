@@ -34,7 +34,7 @@ export default memo(function NumberBox({ number, onDelete }: Props) {
           {number}
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="180px" color="white" bg="main.2" borderColor="main.2">
+      {/* <PopoverContent w="180px" color="white" bg="main.2" borderColor="main.2">
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>
@@ -49,7 +49,7 @@ export default memo(function NumberBox({ number, onDelete }: Props) {
             Remove {number}
           </Button>
         </PopoverBody>
-      </PopoverContent>
+      </PopoverContent> */}
     </Popover>
   )
 })
