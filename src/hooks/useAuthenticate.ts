@@ -9,21 +9,31 @@ export const useAuthenticate = () => {
   const user = useUserStore(state => state.user)
   const { getPolicy } = usePolicyStore()
   const signInByGoogle = useUserStore(state => state.signInByGoogle)
-  const { hideLoading, showLoading } = useLoadingStore()
+  const { hideLoading, showLoading, setInit } = useLoadingStore()
   const supabaseClient = useSupabaseClient()
+
+  const router = useRouter()
 
   const { getUserByEmail, setUser } = useUserStore()
 
   const getData = useCallback(async () => {
+    if (!router.isReady) return
     showLoading()
     const client = await supabaseClient.auth.getUser()
+    if (client?.error) {
+      if (router.pathname !== '/') {
+        setInit(true)
+        return router.replace('/')
+      }
+    }
     const email = client.data?.user?.email
     if (email) {
       const data = await getUserByEmail(email)
       if (data) setUser(data)
     }
+    setInit(true)
     hideLoading()
-  }, [getUserByEmail, hideLoading, setUser, showLoading, supabaseClient.auth])
+  }, [getUserByEmail, hideLoading, router, setUser, showLoading, supabaseClient.auth, setInit])
 
   useEffect(() => {
     getData()
@@ -40,8 +50,6 @@ export const useAuthenticate = () => {
   useEffect(() => {
     getPolicy(user?.roles?.policies_id)
   }, [user?.roles?.policies_id, getPolicy])
-
-  const router = useRouter()
 
   useEffect(() => {
     if (!normalRole) return
