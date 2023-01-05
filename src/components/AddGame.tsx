@@ -117,12 +117,12 @@ export default memo(function AddGame() {
 
   return (
     <Screen>
-      <VStack flex={1} color="text" fontSize="xl" w="80%">
-        <Box height="10px" />
-        <Text color="text" fontSize="2xl" fontWeight="bold">
-          Create new game
-        </Text>
-        <Box height="10px" />
+      <Box height="10px" />
+      <Text color="text" fontSize="2xl" fontWeight="bold">
+        Create new game
+      </Text>
+      <Box height="10px" />
+      <VStack flex={1} color="text" fontSize="xl" w="100%" px="4">
         <TextInput
           control={control}
           name="name"

@@ -133,7 +133,7 @@ export default memo(function TeamDetail({ teamId }: Props) {
         {team?.name}
       </Text>
       <Box height="10px" />
-      <VStack color="main.4" fontSize="xl" flex={1}>
+      <VStack color="main.4" fontSize="xl" flex={1} w="100%" px="4">
         <HStack spacing="4">
           <TextInput
             control={control}
