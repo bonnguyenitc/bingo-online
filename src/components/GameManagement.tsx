@@ -34,6 +34,7 @@ import PlayersDrawer from './PlayersDrawer'
 import PrimaryIconButton from './PrimaryIconButton'
 import PrimarySwitch from './PrimarySwitch'
 import { usePolicyStore } from '../store/usePolicyStore'
+import { useToast } from '../hooks'
 
 const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
 const fileExtension = '.xlsx'
@@ -49,6 +50,8 @@ export default memo(function GameManagement({ id }: Props) {
   const { showLoading, hideLoading } = useLoadingStore()
   const exportMemberCsv = useTeamStore(state => state.getPlayersOfGame)
   const supabaseClient = useSupabaseClient()
+
+  const { toastError } = useToast()
 
   const policy = usePolicyStore(state => state.policy)
 
@@ -234,7 +237,7 @@ export default memo(function GameManagement({ id }: Props) {
   }, [exportMemberCsv, game])
 
   const handleBingo = useCallback(async () => {
-    if (numbers?.length === NUMBER_MAX) return
+    if (numbers?.length === NUMBER_MAX) return toastError('Bingo done, can not add number')
     showLoading()
     let bingo = randomBingo(1, NUMBER_MAX)
     while (numbers.includes(bingo)) {
@@ -242,7 +245,7 @@ export default memo(function GameManagement({ id }: Props) {
     }
     await addNumberByNumber(bingo)
     hideLoading()
-  }, [numbers, showLoading, addNumberByNumber, hideLoading])
+  }, [numbers, showLoading, addNumberByNumber, hideLoading, toastError])
 
   const resetError = useCallback(() => {
     setErr('')
