@@ -138,7 +138,7 @@ export default memo(function TeamDetail({ teamId }: Props) {
           <TextInput
             control={control}
             name="name"
-            w="300px"
+            w="240px"
             placeholder="Type an email of player"
             size="md"
             color="text"

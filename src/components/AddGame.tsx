@@ -128,7 +128,7 @@ export default memo(function AddGame() {
           name="name"
           w="300px"
           placeholder="Type a name of game"
-          size="lg"
+          size="md"
           color="text"
           maxLength={255}
         />

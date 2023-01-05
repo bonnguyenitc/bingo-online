@@ -95,7 +95,7 @@ export default memo(function AddTeam() {
           name="name"
           w="300px"
           placeholder="Type a team name"
-          size="lg"
+          size="md"
           color="text"
           maxLength={255}
         />
