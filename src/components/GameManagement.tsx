@@ -28,7 +28,6 @@ import Screen from './Screen'
 import If from './If'
 import { NUMBER_MAX } from '../utils/constans'
 import { randomBingo } from '../utils/random'
-import { delay } from '../utils/helpers'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { CodePlay, Round } from '../db/v1'
 import PlayersDrawer from './PlayersDrawer'
@@ -140,7 +139,7 @@ export default memo(function GameManagement({ id }: Props) {
     setErr('')
     if (!game || !userId) return
     if (game.completed) {
-      return setErr("Finished game can't add numbers")
+      return setErr('You can not add a number when game is over')
     }
     if (!number) return
     try {
@@ -165,7 +164,7 @@ export default memo(function GameManagement({ id }: Props) {
       setErr('')
       if (!game || !userId) return
       if (game?.completed) {
-        return setErr("Finished game can't add numbers")
+        return setErr('You can not add a number when game is over')
       }
       if (!bingo) return
       try {
@@ -228,7 +227,7 @@ export default memo(function GameManagement({ id }: Props) {
             type: 'array',
           })
           const data = new Blob([excelBuffer], { type: fileType })
-          FileSaver.saveAs(data, 'List ' + game?.entry_code + fileExtension)
+          FileSaver.saveAs(data, 'List-' + game?.entry_code + fileExtension)
         }
       }
     } catch (_) {}
@@ -281,7 +280,7 @@ export default memo(function GameManagement({ id }: Props) {
           <PrimaryIconButton aria-label="copy" icon={<FaUsers />} onClick={onOpen} />
         </HStack>
         <Text color="text" fontSize="xs">
-          Send code for players join to play this game
+          Send this code to players so they can join this game
         </Text>
         <If
           condition={game.team_play_game && game.team_play_game?.length > 0}
@@ -392,7 +391,7 @@ export default memo(function GameManagement({ id }: Props) {
           />
         </Flex>
         <Text color="text" fontSize="xs">
-          Click to start generate bingo numbers now
+          Click to generate bingo numbers now
         </Text>
         <Box height="8px" />
         <If
