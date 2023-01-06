@@ -83,7 +83,7 @@ export default memo(function PlayGround() {
             <WrapItem key={num}>
               <Center bg="main.1" borderRadius="full" w="50px" h="50px">
                 <Text color="textLight" fontSize="2xl" fontWeight="bold">
-                  {num}
+                  {num < 10 ? '0' + num : num}
                 </Text>
               </Center>
             </WrapItem>
