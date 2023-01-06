@@ -288,19 +288,25 @@ export default memo(function GameManagement({ id }: Props) {
         <If
           condition={game.team_play_game && game.team_play_game?.length > 0}
           component={
-            <VStack bg="main.2" borderRadius="12px" py="18px" px="8px">
-              <Text mr="8" fontSize="xl" fontWeight="semibold">
-                Teams joined
+            <VStack
+              bg="main.2"
+              borderRadius="12px"
+              py="18px"
+              px="8px"
+              w="100%"
+              alignItems="flex-start">
+              <Text mr="8" fontSize="md" fontWeight="semibold">
+                Teams in game
               </Text>
-              <Wrap>
+              <VStack>
                 {game.team_play_game?.map(team => (
-                  <Box key={team.id} p="2" borderRadius="md">
+                  <Box key={team.id} pl="2" borderRadius="md">
                     <Text fontSize="md" fontWeight="semibold">
                       {team.teams?.name}
                     </Text>
                   </Box>
                 ))}
-              </Wrap>
+              </VStack>
             </VStack>
           }
           fallback={null}
